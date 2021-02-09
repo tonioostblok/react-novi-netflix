@@ -26,18 +26,43 @@ export function passwordChange(payload) {
 
 // export const users = firebase.database().collection('users');
 
-export const login = (username, password) => (dispatch) => {
-  firebase.firestore().collection('users').where('username', '==', username).get()
-    .then((query) => {
-      query.forEach((doc) => {
-        const user = doc.data();
-        if (user.password === password) {
-          localStorage.setItem('user_id', doc.id);
-          dispatch(loginChange(user));
-        }
-      });
-    });
+export const getMe = (hash) => {
+  return dispatch => {
+    firebase.firestore().collection('users').where(firebase.firestore.FieldPath.documentId(), '==', hash).get()
+        .then((query) => {
+          console.log(query)
+          query.forEach((doc) => {
+            const user = doc.data()
+            dispatch(loginChange(user))
+          });
+        });
+  }
+}
+
+export const login = (username, password) =>  {
+  return dispatch => {
+    firebase.firestore().collection('users').where('username', '==', username).get()
+        .then((query) => {
+          query.forEach((doc) => {
+            const user = doc.data();
+            if (user.password === password) {
+              localStorage.setItem('user_id', doc.id);
+              dispatch(loginChange(user));
+            }
+          });
+        })
+  }
 };
+
+export const updateUserCountry = (country_id) => {
+  return dispatch => {
+    firebase.firestore().collection('users').doc(localStorage.getItem('user_id')).update({country:country_id})
+        .then((query) => {
+          dispatch(getMe(localStorage.getItem('user_id')))
+        });
+  }
+}
+
 export const updateUserName = (username) => (dispatch) => {
   dispatch(userNameChange(username));
 };
@@ -47,12 +72,17 @@ export const updatePassword = (password) => (dispatch) => {
 export const initialState = {
   username: '',
   password: '',
+  user: {
+    username:'',
+    password:''
+  }
 };
 
 export default function authenticationReducer(state = initialState, action) {
   switch (action.type) {
     case LOGIN_CHANGE:
-      return { ...state, ...action.payload };
+      console.log(action.payload)
+      return { ...state, user: action.payload };
     case USERNAME_CHANGE:
       return { ...state, username: action.payload };
     case PASSWORD_CHANGE:

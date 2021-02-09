@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Checkbox, Form } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import '../../css/login.css';
+
 // eslint-disable-next-line react/prefer-stateless-function
 class Login extends React.Component {
   componentDidMount() {
@@ -29,19 +31,25 @@ class Login extends React.Component {
   render() {
     return (
       <>
-        <Form
-          onSubmit={(e) => this.submitHandler(e)}
-        >
-          <Form.Field>
-            <label>First Name</label>
-            <input placeholder="First Name" onChange={(value) => this.props.updateUserName(value.target.value)} />
-          </Form.Field>
-          <Form.Field>
-            <label>Password</label>
-            <input type="password" placeholder="Last Name" onChange={(value) => this.props.updatePassword(value.target.value)} />
-          </Form.Field>
-          <Button type="submit">Submit</Button>
-        </Form>
+        <section className={"user-login"}>
+          <div className={"section-inner"}>
+            <div className={"form"}>
+              <Form
+                  onSubmit={(e) => this.submitHandler(e)}
+                  className={"login"}
+              >
+                <h1>Login</h1>
+                <div className="form-group">
+                  <label>First Name</label>
+                  <input className={"form-input"} onChange={(value) => this.props.updateUserName(value.target.value)} />
+                  <label>Password</label>
+                  <input className={"form-input"} type="password" onChange={(value) => this.props.updatePassword(value.target.value)} />
+                </div>
+                <Button type="submit">Submit</Button>
+              </Form>
+            </div>
+          </div>
+        </section>
       </>
     );
   }
