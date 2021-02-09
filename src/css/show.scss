@@ -1,58 +1,64 @@
-.show-wrapper{
-  display:flex;
-  flex-direction: column;
-  border-radius: 8px;
-  box-shadow: 0 20px 60px 0 rgba(2, 1, 55, 0.1);
-  background-color: black;
-  color:white;
-  align-items: center;
-  width:40%;
-  margin: 0 auto;
-  padding:5px;
-  cursor:pointer;
-  .image{
-
-    img{
-      height:150px;
+.shows-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top:25px;
+  .show-wrapper{
+    display:flex;
+    flex-direction: row;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px 0 rgba(2, 1, 55, 0.1);
+    background-color: #505050;
+    color:white;
+    align-items: center;
+    width:49%;
+    margin:5px 0;
+    padding:5px;
+    cursor:pointer;
+    .image{
+      img{
+        height:150px;
+      }
     }
-  }
-  .title{
-    padding-left:15px;
-    .show-title{
-      font-weight:bold;
-      font-size: 24px;
-      font-stretch: normal;
-      font-style: normal;
-      line-height: 2.25;
-      letter-spacing: normal;
-      color:#e50914;
-      margin-bottom: 0;
+    .title{
+      padding-left:15px;
+      .show-title{
+        font-weight:bold;
+        font-size: 24px;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 2.25;
+        letter-spacing: normal;
+        color:#e50914;
+        margin-bottom: 0;
+      }
+      .show-synopsis{
+        width:65%;
+      }
+      .show-year{
+        font-size: 18px;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.67;
+        letter-spacing: normal;
+      }
     }
-    .show-synopsis{
-      width:65%;
-    }
-    .show-year{
-      font-size: 18px;
-      font-weight: bold;
-      font-stretch: normal;
-      font-style: normal;
-      line-height: 1.67;
-      letter-spacing: normal;
-    }
-  }
-  .show-status{
-    margin-left: auto;
-    width:35%;
-    .status-wrapper{
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
-    .removed{
-      color:#db2828;
-    }
-    .added{
-      color:#21ba45;
+    .show-status{
+      margin-left: auto;
+      width:35%;
+      .status-wrapper{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+      .removed{
+        color:#db2828;
+      }
+      .added{
+        color:#21ba45;
+      }
     }
   }
 }

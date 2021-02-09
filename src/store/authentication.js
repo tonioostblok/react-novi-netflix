@@ -62,6 +62,21 @@ export const updateUserCountry = (country_id) => {
         });
   }
 }
+export const registerUser = (registerObject) => {
+  return dispatch => {
+    firebase.firestore().collection("users").add({
+          username:registerObject.username,
+          password:registerObject.password,
+          country:registerObject.country,
+        })
+        .then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+        });
+  }
+}
 
 export const updateUserName = (username) => (dispatch) => {
   dispatch(userNameChange(username));
@@ -81,7 +96,6 @@ export const initialState = {
 export default function authenticationReducer(state = initialState, action) {
   switch (action.type) {
     case LOGIN_CHANGE:
-      console.log(action.payload)
       return { ...state, user: action.payload };
     case USERNAME_CHANGE:
       return { ...state, username: action.payload };

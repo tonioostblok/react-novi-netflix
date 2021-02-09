@@ -1,0 +1,51 @@
+body {
+  background: black !important;
+  color: white !important;
+}
+body .app-wrapper {
+  width: 1300px;
+  padding: 30px;
+  margin: 0 auto;
+}
+body .menu-bar {
+  display: flex;
+  flex-direction: row;
+  padding: 15px;
+}
+body .menu-bar p {
+  cursor: pointer;
+  margin-right: 15px;
+}
+body .button-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+body .button-wrapper .large-square-buttons {
+  width: 150px;
+  height: 150px;
+  border-color: #e50914;
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px 21px;
+  text-transform: uppercase;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  text-transform: uppercase;
+  color: white;
+  /*#3e3e3e;*/
+  background: #e50914;
+  /*#7cb289;*/
+  border-bottom: 1px solid #343434;
+  transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  float: left;
+}
+
+/*# sourceMappingURL=styles.css.map */

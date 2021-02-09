@@ -1,10 +1,15 @@
 import React from 'react';
-import { Button, Checkbox, Form } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import '../../css/login.css';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      message:""
+    }
+  }
   componentDidMount() {
     this.redirectIfLoggedIn();
   }
@@ -28,25 +33,39 @@ class Login extends React.Component {
     }
   }
 
+  renderFlashMessage() {
+    const params = new URLSearchParams(this.props.location.search);
+    const message = params.get('message');
+    if(message){
+      return(
+          <div>
+            <p>{message}</p>
+          </div>
+      )
+    }
+  }
+
   render() {
     return (
       <>
         <section className={"user-login"}>
           <div className={"section-inner"}>
             <div className={"form"}>
-              <Form
+              <form
                   onSubmit={(e) => this.submitHandler(e)}
                   className={"login"}
               >
                 <h1>Login</h1>
+                { this.renderFlashMessage() }
                 <div className="form-group">
                   <label>First Name</label>
                   <input className={"form-input"} onChange={(value) => this.props.updateUserName(value.target.value)} />
                   <label>Password</label>
                   <input className={"form-input"} type="password" onChange={(value) => this.props.updatePassword(value.target.value)} />
                 </div>
-                <Button type="submit">Submit</Button>
-              </Form>
+                <button type="submit">Submit</button>
+                <p onClick={() => this.props.history.push("/register")}>No account? Register here!</p>
+              </form>
             </div>
           </div>
         </section>

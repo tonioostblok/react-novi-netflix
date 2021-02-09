@@ -1,11 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../../css/components.css';
-import Pagination from "semantic-ui-react/dist/commonjs/addons/Pagination";
-import Table from "semantic-ui-react/dist/commonjs/collections/Table";
-import Segment from "semantic-ui-react/dist/commonjs/elements/Segment";
-import Dimmer from "semantic-ui-react/dist/commonjs/modules/Dimmer";
-import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 import Show from "../Shows/Show";
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -61,7 +56,7 @@ class NetflixShows extends React.Component {
 
     render() {
         return (
-                <div>
+            <div class="shows-container">
                 {this.props.shows && this.props.shows.map((val, key) => {
                     return (
                         <Show
@@ -72,7 +67,7 @@ class NetflixShows extends React.Component {
                         />
                     )
                 })}
-                </div>
+            </div>
         );
     }
 }

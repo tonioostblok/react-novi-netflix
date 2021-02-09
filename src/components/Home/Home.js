@@ -30,22 +30,28 @@ class Home extends React.Component {
       netflixShowsFilter:value
     })
   }
+
+  signOut(){
+    localStorage.removeItem('user_id');
+    this.props.history.push('/login');
+  }
   render() {
     return (
-        <div className={'search-block'}>
+        <div className={'app-wrapper'}>
         {
-          (this.props.user.country)
-              ? <div>
-                <CountrySelector countries={this.props.countries} />
-                <div className="button-wrapper">
-                  <button className="large-square-buttons" onClick={() => this.handleButtonClick("new")}>NEW SHOWS</button>
-                  <button className="large-square-buttons" onClick={() => this.handleButtonClick("deleted")}>DELETED SHOWS</button>
-                  <button className="large-square-buttons" onClick={() => this.handleButtonClick("all")}>ALL SHOWS</button>
-                </div>
-                {this.state.netflixShowsFilter && <NetflixShows fetchDeleted={(this.state.netflixShowsFilter === 'deleted')} />}
-              </div>
-
-              : <CountrySelector countries={this.props.countries} />
+        <div>
+          {/*<CountrySelector countries={this.props.countries} />*/}
+          <div className="menu-bar">
+            <p onClick={() => {this.props.history.push("/account")}}>Account settings</p>
+            <p onClick={() => this.signOut()}>Sign out</p>
+          </div>
+          <div className="button-wrapper">
+            <button className="large-square-buttons" onClick={() => this.handleButtonClick("new")}>NEW SHOWS</button>
+            <button className="large-square-buttons" onClick={() => this.handleButtonClick("deleted")}>DELETED SHOWS</button>
+            <button className="large-square-buttons" onClick={() => this.handleButtonClick("all")}>ALL SHOWS</button>
+          </div>
+          {this.state.netflixShowsFilter && <NetflixShows fetchDeleted={(this.state.netflixShowsFilter === 'deleted')} />}
+        </div>
         }
       </div>
     );
