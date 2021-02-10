@@ -7,6 +7,15 @@ body .app-wrapper {
   padding: 30px;
   margin: 0 auto;
 }
+body .pagination {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+body .pagination button {
+  width: 49%;
+}
 body .flash-message {
   background-color: #4BB543;
   padding: 15px;

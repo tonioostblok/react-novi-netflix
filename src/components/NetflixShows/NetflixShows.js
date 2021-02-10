@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import '../../css/components.css';
 import Show from "../Shows/Show";
 
-// eslint-disable-next-line react/prefer-stateless-function
 class NetflixShows extends React.Component {
     constructor(props) {
         super(props);
@@ -41,11 +40,15 @@ class NetflixShows extends React.Component {
 
     }
 
-    changePage(data) {
+    changePage(goBack = false) {
+        let newpage = this.state.page + 1;
+        if(goBack){
+           newpage = (this.state.page <= 1) ? 1 : this.state.page - 1;
+        }
         this.setState({
-            page: data.activePage
+            page: newpage
         })
-        const offset = (data.activePage - 1) * this.state.perPage
+        const offset = (newpage - 1) * this.state.perPage
         if (this.props.fetchDeleted) {
             this.props.fetchDeletedShows(offset, this.state.perPage, this.props.user.country)
         } else {
@@ -67,6 +70,10 @@ class NetflixShows extends React.Component {
                         />
                     )
                 })}
+                <div className={"pagination"} >
+                    <button onClick={() => this.changePage(true)}>Previous page</button>
+                    <button onClick={() => this.changePage()}>Next page</button>
+                </div>
             </div>
         );
     }

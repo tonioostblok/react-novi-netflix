@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CountrySelector from '../Countries';
 import NetflixShows from "../NetflixShows";
 
-// eslint-disable-next-line react/prefer-stateless-function
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -12,17 +10,13 @@ class Home extends React.Component {
     }
   }
   componentDidMount() {
-    this.props.fetchCountries();
-
     const userId = localStorage.getItem('user_id');
     if (!userId) {
       this.props.history.push('/login');
     }
-    if(this.props.user.username === ""){
-      this.props.getMe(localStorage.getItem('user_id'))
-    }else{
 
-    }
+    this.props.fetchCountries();
+    this.props.getMe(userId)
   }
 
   handleButtonClick(value){
@@ -40,7 +34,6 @@ class Home extends React.Component {
         <div className={'app-wrapper'}>
         {
         <div>
-          {/*<CountrySelector countries={this.props.countries} />*/}
           <div className="menu-bar">
             <p onClick={() => {this.props.history.push("/account")}}>Account settings</p>
             <p onClick={() => this.signOut()}>Sign out</p>
@@ -62,7 +55,7 @@ Home.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types,react/require-default-props
   history: PropTypes.object,
   fetchCountries: PropTypes.func,
-  countries: PropTypes.object,
+  countries: PropTypes.array,
   user: PropTypes.object,
   getMe: PropTypes.func
 };
