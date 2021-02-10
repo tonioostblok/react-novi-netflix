@@ -38,7 +38,7 @@ class Login extends React.Component {
     const message = params.get('message');
     if(message){
       return(
-          <div>
+          <div className="flash-message">
             <p>{message}</p>
           </div>
       )
@@ -64,7 +64,7 @@ class Login extends React.Component {
                   <input className={"form-input"} type="password" onChange={(value) => this.props.updatePassword(value.target.value)} />
                 </div>
                 <button type="submit">Submit</button>
-                <p onClick={() => this.props.history.push("/register")}>No account? Register here!</p>
+                <p className="link" onClick={() => this.props.history.push("/register")}>No account? Register here!</p>
               </form>
             </div>
           </div>

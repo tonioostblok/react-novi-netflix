@@ -7,6 +7,16 @@ body .app-wrapper {
   padding: 30px;
   margin: 0 auto;
 }
+body .flash-message {
+  background-color: #4BB543;
+  padding: 15px;
+  border-radius: 27px;
+  margin-bottom: 15px;
+}
+body .link {
+  padding: 15px 5px;
+  cursor: pointer;
+}
 body .menu-bar {
   display: flex;
   flex-direction: row;

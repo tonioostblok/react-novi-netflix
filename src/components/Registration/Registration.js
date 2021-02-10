@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import '../../css/login.css';
 import {fetchCountries} from "../../store/netflix";
 import {registerUser} from "../../store/authentication";
+import CountrySelect from "../CountrySelect/CountrySelect";
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Registration extends React.Component {
@@ -16,6 +17,7 @@ class Registration extends React.Component {
       passwordConfirm:"",
       country:"",
     }
+    this.handleChange = this.handleChange.bind(this)
   }
   componentDidMount() {
     this.props.fetchCountries();
@@ -103,20 +105,10 @@ class Registration extends React.Component {
                     {this.getPasswordErrors().map((e, i) => <li className='error-points' key={i}>{e}</li>)}
                   </ul>
                   <label>Country</label>
-                  <select
-                      onChange={(e) => this.handleChange(e)}
-                      name={"country"}
-                      className={"form-input"}
-                  >
-                    <option disabled selected>Select a country</option>
-                    {
-                      this.props.countries.map((val,key) => {
-                        return(
-                            <option value={val.key}>{val.text}</option>
-                        )
-                      })
-                    }
-                  </select>
+                  <CountrySelect
+                      countries={this.props.countries}
+                      handleChange={this.handleChange}
+                  />
                 </div>
                 <button disabled={this.isFormValid()} type="submit">Submit</button>
               </form>

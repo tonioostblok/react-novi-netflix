@@ -78,6 +78,18 @@ export const registerUser = (registerObject) => {
   }
 }
 
+export const updateUser = (updateValues) => {
+    return dispatch => {
+        firebase.firestore().collection("users").doc(localStorage.getItem("user_id")).set(updateValues)
+            .then((docRef) => {
+                console.log("Document written with ID: ");
+            })
+            .catch((error) => {
+                console.error("Error adding document: ");
+            });
+    }
+}
+
 export const updateUserName = (username) => (dispatch) => {
   dispatch(userNameChange(username));
 };
@@ -85,11 +97,10 @@ export const updatePassword = (password) => (dispatch) => {
   dispatch(passwordChange(password));
 };
 export const initialState = {
-  username: '',
-  password: '',
   user: {
     username:'',
-    password:''
+    password:'',
+    country: ''
   }
 };
 

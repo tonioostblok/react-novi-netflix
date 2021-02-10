@@ -6,6 +6,16 @@ body{
     padding:30px;
     margin: 0 auto;
   }
+  .flash-message{
+    background-color: #4BB543;
+    padding:15px;
+    border-radius:27px;
+    margin-bottom:15px;
+  }
+  .link{
+    padding:15px 5px;
+    cursor:pointer;
+  }
   .menu-bar{
     display:flex;
     flex-direction: row;
