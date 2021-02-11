@@ -96,6 +96,8 @@ export const updatePassword = (password) => (dispatch) => {
   dispatch(passwordChange(password));
 };
 export const initialState = {
+  username: "",
+  password: "",
   user: {
     username:'',
     password:'',
