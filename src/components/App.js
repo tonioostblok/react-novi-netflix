@@ -17,11 +17,10 @@ function App() {
   return (
     <div>
       <Router>
-        {/*<Redirect exact from="/" to="login" />*/}
-        <Route path="/home" component={Home} />
-        <Route path="/account" component={Account} />
-        <Route path="/register" component={Registration} />
-        <Route path="/login" component={Login} />
+        <Route exact path="/home" component={Home} />
+        <Route exact path="/account" component={Account} />
+        <Route exact path="/register" component={Registration} />
+        <Route exact path="/" component={Login} />
       </Router>
     </div>
   );

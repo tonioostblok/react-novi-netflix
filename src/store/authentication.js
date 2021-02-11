@@ -30,7 +30,6 @@ export const getMe = (hash) => {
   return dispatch => {
     firebase.firestore().collection('users').where(firebase.firestore.FieldPath.documentId(), '==', hash).get()
         .then((query) => {
-          console.log(query)
           query.forEach((doc) => {
             const user = doc.data()
             dispatch(loginChange(user))

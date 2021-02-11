@@ -6,13 +6,14 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      netflixShowsFilter:false
+      netflixShowsFilter:false,
+      searchQuery: ""
     }
   }
   componentDidMount() {
     const userId = localStorage.getItem('user_id');
     if (!userId) {
-      this.props.history.push('/login');
+      this.props.history.push('/');
     }
 
     this.props.fetchCountries();
@@ -24,10 +25,17 @@ class Home extends React.Component {
       netflixShowsFilter:value
     })
   }
+  handleTitleSearch(event){
+    const searchTerm = event.target.value
+    this.setState({
+      netflixShowsFilter: "search",
+      searchQuery: `query=${searchTerm}`,
+    })
 
+  }
   signOut(){
     localStorage.removeItem('user_id');
-    this.props.history.push('/login');
+    this.props.history.push('/');
   }
   render() {
     return (
@@ -39,11 +47,18 @@ class Home extends React.Component {
             <p onClick={() => this.signOut()}>Sign out</p>
           </div>
           <div className="button-wrapper">
-            <button className="large-square-buttons" onClick={() => this.handleButtonClick("new")}>NEW SHOWS</button>
-            <button className="large-square-buttons" onClick={() => this.handleButtonClick("deleted")}>DELETED SHOWS</button>
-            <button className="large-square-buttons" onClick={() => this.handleButtonClick("all")}>ALL SHOWS</button>
+            <div className={"search-wrapper"}>
+              <input
+                  className={"form-input"}
+                  placeholder={"Search for specific shows"}
+                  name={"search-shows"}
+                  onChange={(e) => this.handleTitleSearch(e)}
+              />
+            </div>
+            <button onClick={() => this.handleButtonClick("new")}>NEW SHOWS</button>
+            <button onClick={() => this.handleButtonClick("deleted")}>EXPIRING SHOWS</button>
           </div>
-          {this.state.netflixShowsFilter && <NetflixShows fetchDeleted={(this.state.netflixShowsFilter === 'deleted')} />}
+          {this.state.netflixShowsFilter && <NetflixShows searchQuery={this.state.searchQuery} fetchDeleted={(this.state.netflixShowsFilter === 'deleted')} />}
         </div>
         }
       </div>
@@ -55,6 +70,7 @@ Home.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types,react/require-default-props
   history: PropTypes.object,
   fetchCountries: PropTypes.func,
+  fetchActualShows: PropTypes.func,
   countries: PropTypes.array,
   user: PropTypes.object,
   getMe: PropTypes.func

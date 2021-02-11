@@ -21,7 +21,6 @@ export function fetching(payload) {
 }
 
 export function fetchCountriesChange(payload) {
-    console.log(payload)
     return ({
         type: COUNTRIES_FETCHED,
         payload
@@ -46,7 +45,7 @@ export const fetchCountries = () => {
                 let mappedCountries = [];
 
                 data.results.map((val) => {
-                    mappedCountries.push({
+                    return mappedCountries.push({
                         key: val.id,
                         value: val.id,
                         flag: val.countrycode.toLowerCase(),
@@ -69,7 +68,7 @@ export const fetchCountries = () => {
  * @param countryList
  * @returns {function(*): Promise<unknown>}
  */
-export const fetchActualShows = (offset = 0, limit = 10, countryList = 67, date = false) => {
+export const fetchActualShows = (offset = 0, limit = 10, countryList = 67, date = false, query = "filterBy= New last 24 hours") => {
 
     return (dispatch) => {
         let requestObj = {
@@ -84,7 +83,7 @@ export const fetchActualShows = (offset = 0, limit = 10, countryList = 67, date 
             date = moment().subtract(7, "days").format('YYYY-MM-DD')
         }
         dispatch(fetching(true))
-        return fetch(`${NETFLIX_API_URL}/search?filterby=New last 24 hours&offset=${offset}&limit=${limit}&countrylist=${countryList}`, requestObj)
+        return fetch(`${NETFLIX_API_URL}/search?${query}&offset=${offset}&limit=${limit}&countrylist=${countryList}`, requestObj)
             .then(response => {
                 return Promise.resolve(response.json())
             }).then(data => {
@@ -113,7 +112,6 @@ export const fetchDeletedShows = (offset = 0,
                                 ) => {
 
     return (dispatch) => {
-        console.log(date)
         let requestObj = {
             ...API_REQUEST_OBJECT,
             method: "GET",
@@ -125,14 +123,17 @@ export const fetchDeletedShows = (offset = 0,
             date = moment().subtract(1, "months").format('YYYY-MM-DD')
         }
         dispatch(fetching(true))
-        return fetch(`${NETFLIX_API_URL}titlesdel?offset=${offset}&limit=${limit}&countrylist=${countryList}&date=${date}`, requestObj)
+        return fetch(`${NETFLIX_API_URL}expiring?offset=${offset}&limit=${limit}&countrylist=${countryList}&date=${date}`, requestObj)
             .then(response => {
                 return Promise.resolve(response.json())
             }).then(data => {
                 /**
-                 * due to the api not showing actual title details in the titlesdel endpoint we need to do this longer way of feching them.
+                 * due to the api not showing actual title details in the expiring endpoint we need to do this longer way of feching them.
                  */
-                let promises = data.results.map((val, key) => {
+                const sortedByExpireDate = data.results.sort((a, b) => {
+                    return new Date(a.expiredate) - new Date(b.expiredate)
+                })
+                let promises = sortedByExpireDate.map((val, key) => {
                     return fetch(`${NETFLIX_API_URL}title?netflixid=${val.netflixid}`, requestObj).then(response => {
                         return Promise.resolve(response.json())
                     }).then(response => {
@@ -141,7 +142,8 @@ export const fetchDeletedShows = (offset = 0,
                             title: show.title,
                             img: show.img,
                             year: show.year,
-                            synopsis: show.synopsis
+                            synopsis: show.synopsis,
+                            expireDate: val.expiredate
                         }
                     })
                 })
@@ -165,7 +167,6 @@ export const initialState = {
 export default function netflixReducer(state = initialState, action) {
     switch (action.type) {
         case FETCHING:
-            console.log(action.payload)
             return {...state, fetching: action.payload};
         case FETCH_SHOWS_CHANGE:
             return {...state, shows: action.payload};

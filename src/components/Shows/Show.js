@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../../css/show.css';
-import {Icon} from 'semantic-ui-react'
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Show extends React.Component {
@@ -18,7 +17,7 @@ class Show extends React.Component {
                 <div className={"image"}>
                     <img
                         src={this.props.img ? this.props.img : require('../../assets/deleted.jpg')}
-                        alt={"show-image"}/>
+                        alt={this.props.title}/>
                 </div>
                 <div className={"title"}>
                     <p className={"show-title"}>
@@ -32,34 +31,12 @@ class Show extends React.Component {
                             Year: {this.props.year}
                         </p>
                     }
-
+                    {this.props.expireDate &&
+                        <p className={"expire-date"}>
+                            Expire date: {this.props.expireDate}
+                        </p>
+                    }
                 </div>
-                {/*<div className={"show-status"}>*/}
-                {/*    {*/}
-                {/*        this.props.removed ?*/}
-                {/*            <span*/}
-                {/*                className={"status-wrapper removed"}*/}
-                {/*            >*/}
-                {/*                <Icon*/}
-                {/*                    color={"red"}*/}
-                {/*                    size={"large"}*/}
-                {/*                    name={'angle double down'}*/}
-                {/*                />*/}
-                {/*                Recently removed*/}
-                {/*            </span>*/}
-                {/*            :*/}
-                {/*            <span*/}
-                {/*                className={"status-wrapper added"}*/}
-                {/*            >*/}
-                {/*                <Icon*/}
-                {/*                    color={"green"}*/}
-                {/*                    size={"large"}*/}
-                {/*                    name={'angle double up'}*/}
-                {/*                />*/}
-                {/*                Recently added*/}
-                {/*            </span>*/}
-                {/*    }*/}
-                {/*</div>*/}
             </div>
         );
     }

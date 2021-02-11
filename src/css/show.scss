@@ -4,6 +4,11 @@
   flex-wrap: wrap;
   justify-content: space-between;
   margin-top:25px;
+  .button-wrapper{
+    button{
+      width:49%;
+    }
+  }
   .show-wrapper{
     display:flex;
     flex-direction: row;
@@ -43,21 +48,6 @@
         font-style: normal;
         line-height: 1.67;
         letter-spacing: normal;
-      }
-    }
-    .show-status{
-      margin-left: auto;
-      width:35%;
-      .status-wrapper{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-      }
-      .removed{
-        color:#db2828;
-      }
-      .added{
-        color:#21ba45;
       }
     }
   }

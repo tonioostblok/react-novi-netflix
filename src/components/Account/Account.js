@@ -20,7 +20,7 @@ class Account extends React.Component {
     this.props.getMe(localStorage.getItem('user_id'))
     const userId = localStorage.getItem('user_id');
     if (!userId) {
-      this.props.history.push('/login');
+      this.props.history.push('/');
     }
     if(this.props.user.username === ""){
       this.props.getMe(userId)

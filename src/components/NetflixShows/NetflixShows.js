@@ -18,11 +18,15 @@ class NetflixShows extends React.Component {
     }
 
     fetchNetflixShows() {
-        if (this.props.fetchDeleted) {
-            //fetch deleted
-            this.props.fetchDeletedShows(0, 10, this.props.user.country)
-        } else {
-            this.props.fetchActualShows(0, 10, this.props.user.country);
+        if(this.props.searchQuery !== ""){
+            this.props.fetchActualShows(0, 10, this.props.user.country, false, this.props.searchQuery)
+        }else{
+            if (this.props.fetchDeleted) {
+                //fetch deleted
+                this.props.fetchDeletedShows(0, 10, this.props.user.country)
+            } else {
+                this.props.fetchActualShows(0, 10, this.props.user.country);
+            }
         }
     }
 
@@ -37,7 +41,9 @@ class NetflixShows extends React.Component {
         if (prevProps.fetchDeleted !== this.props.fetchDeleted) {
             this.fetchNetflixShows()
         }
-
+        if(prevProps.searchQuery !== this.props.searchQuery){
+            this.fetchNetflixShows()
+        }
     }
 
     changePage(goBack = false) {
@@ -67,6 +73,7 @@ class NetflixShows extends React.Component {
                             img={val.img}
                             synopsis={val.synopsis}
                             year={val.year}
+                            expireDate={!val.expireDate ? false : val.expireDate}
                         />
                     )
                 })}

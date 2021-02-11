@@ -5,6 +5,9 @@
   justify-content: space-between;
   margin-top: 25px;
 }
+.shows-container .button-wrapper button {
+  width: 49%;
+}
 .shows-container .show-wrapper {
   display: flex;
   flex-direction: row;
@@ -44,21 +47,6 @@
   font-style: normal;
   line-height: 1.67;
   letter-spacing: normal;
-}
-.shows-container .show-wrapper .show-status {
-  margin-left: auto;
-  width: 35%;
-}
-.shows-container .show-wrapper .show-status .status-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.shows-container .show-wrapper .show-status .removed {
-  color: #db2828;
-}
-.shows-container .show-wrapper .show-status .added {
-  color: #21ba45;
 }
 
 /*# sourceMappingURL=show.css.map */

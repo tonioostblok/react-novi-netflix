@@ -40,6 +40,13 @@ body .button-wrapper {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+}
+body .button-wrapper button {
+  width: 49%;
+}
+body .button-wrapper .search-wrapper {
+  width: 100%;
 }
 body .button-wrapper .large-square-buttons {
   width: 150px;
