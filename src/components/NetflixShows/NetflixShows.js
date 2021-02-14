@@ -81,7 +81,7 @@ class NetflixShows extends React.Component {
             img={val.img}
             synopsis={val.synopsis}
             year={val.year}
-            expireDate={!val.expireDate ? false : val.expireDate}
+            expireDate={!val.expireDate ? '' : val.expireDate}
           />
         ))}
         <div className="pagination">

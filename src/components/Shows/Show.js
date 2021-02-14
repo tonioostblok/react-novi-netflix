@@ -8,7 +8,7 @@ class Show extends React.Component {
     const {
       key, title, img, synopsis, year, expireDate,
     } = this.props;
-
+    const renderHTML = (rawHTML) => React.createElement('span', { dangerouslySetInnerHTML: { __html: rawHTML } });
     return (
       <div className="show-wrapper" key={key}>
         <div className="image">
@@ -19,27 +19,27 @@ class Show extends React.Component {
         </div>
         <div className="title">
           <p className="show-title">
-            {title}
+            {renderHTML(title)}
           </p>
           <p className="show-synopsis">
-            {synopsis}
+            {renderHTML(synopsis)}
           </p>
           {year
-                        && (
-                        <p className="show-year">
-                          Year:
-                          {' '}
-                          {year}
-                        </p>
-                        )}
+            && (
+            <p className="show-year">
+              Year:
+              {' '}
+              {year}
+            </p>
+            )}
           {expireDate
-                        && (
-                        <p className="expire-date">
-                          Expire date:
-                          {' '}
-                          {expireDate}
-                        </p>
-                        )}
+            && (
+            <p className="expire-date">
+              Expire date:
+              {' '}
+              {expireDate}
+            </p>
+            )}
         </div>
       </div>
     );
@@ -52,7 +52,7 @@ Show.propTypes = {
   title: PropTypes.string.isRequired,
   synopsis: PropTypes.string.isRequired,
   img: PropTypes.string.isRequired,
-  year: PropTypes.string.isRequired,
+  year: PropTypes.number.isRequired,
   expireDate: PropTypes.string,
 };
 

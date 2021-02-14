@@ -14,7 +14,6 @@ if (process.env.NODE_ENV === 'production') {
   } else if (publicURL.indexOf('/') === 0) {
     historyOpts.basename = publicURL;
   } else {
-    // eslint-disable-next-line no-console
     console.warn(`Warning: can't parse PUBLIC_URL of "${publicURL}"`);
   }
 }

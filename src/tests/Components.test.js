@@ -21,7 +21,7 @@ describe('Country select component test', () => {
       <Show
         title="Breaking bad"
         synopsis="Walter white is a science teacher who has a big turning point in his live"
-        year="2014"
+        year={2014}
         img="https://picsum.photos/200/300"
       />,
     );
