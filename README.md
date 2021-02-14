@@ -1,4 +1,12 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+##Dependencies
+* Node v10.18.0 (https://nodejs.org/en/blog/release/v10.18.0/)
+* Npm v6.13.4
+* Yarn v1.22.10 (npm install yarn -g).
+* Tested on MacOS.
+
+##Installation
+* Run yarn install
+* Run yarn start
 
 ## Available Scripts
 
