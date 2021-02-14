@@ -26,68 +26,40 @@ export function passwordChange(payload) {
 
 // export const users = firebase.database().collection('users');
 
-export const getMe = (hash) => {
-  return dispatch => {
-    firebase.firestore().collection('users').where(firebase.firestore.FieldPath.documentId(), '==', hash).get()
-        .then((query) => {
-          query.forEach((doc) => {
-            const user = doc.data()
-            dispatch(loginChange(user))
-          });
-        });
-  }
-}
-
-export const login = (username, password) =>  {
-  return dispatch => {
-    firebase.firestore().collection('users').where('username', '==', username).get()
-        .then((query) => {
-          query.forEach((doc) => {
-            const user = doc.data();
-            if (user.password === password) {
-              localStorage.setItem('user_id', doc.id);
-              dispatch(loginChange(user));
-            }
-          });
-        })
-  }
+export const getMe = (hash) => (dispatch) => {
+  firebase.firestore().collection('users').where(firebase.firestore.FieldPath.documentId(), '==', hash).get()
+    .then((query) => {
+      query.forEach((doc) => {
+        const user = doc.data();
+        dispatch(loginChange(user));
+      });
+    });
 };
 
-export const updateUserCountry = (country_id) => {
-  return dispatch => {
-    firebase.firestore().collection('users').doc(localStorage.getItem('user_id')).update({country:country_id})
-        .then((query) => {
-          dispatch(getMe(localStorage.getItem('user_id')))
-        });
-  }
-}
-export const registerUser = (registerObject) => {
-  return dispatch => {
-    firebase.firestore().collection("users").add({
-          username:registerObject.username,
-          password:registerObject.password,
-          country:registerObject.country,
-        })
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
-  }
-}
+export const login = (username, password) => (dispatch) => {
+  firebase.firestore().collection('users').where('username', '==', username).get()
+    .then((query) => {
+      query.forEach((doc) => {
+        const user = doc.data();
+        if (user.password === password) {
+          localStorage.setItem('user_id', doc.id);
+          dispatch(loginChange(user));
+        }
+      });
+    });
+};
 
-export const updateUser = (updateValues) => {
-    return dispatch => {
-        firebase.firestore().collection("users").doc(localStorage.getItem("user_id")).set(updateValues)
-            .then((docRef) => {
-                console.log("Document written with ID: ");
-            })
-            .catch((error) => {
-                console.error("Error adding document: ");
-            });
-    }
-}
+export const registerUser = (registerObject) => () => {
+  firebase.firestore().collection('users').add({
+    username: registerObject.username,
+    password: registerObject.password,
+    country: registerObject.country,
+  });
+};
+
+export const updateUser = (updateValues) => () => {
+  firebase.firestore().collection('users').doc(localStorage.getItem('user_id')).set(updateValues);
+};
 
 export const updateUserName = (username) => (dispatch) => {
   dispatch(userNameChange(username));
@@ -96,13 +68,13 @@ export const updatePassword = (password) => (dispatch) => {
   dispatch(passwordChange(password));
 };
 export const initialState = {
-  username: "",
-  password: "",
+  username: '',
+  password: '',
   user: {
-    username:'',
-    password:'',
-    country: ''
-  }
+    username: '',
+    password: '',
+    country: '',
+  },
 };
 
 export default function authenticationReducer(state = initialState, action) {

@@ -1,0 +1,34 @@
+{
+    "env": {
+        "browser": true,
+        "es2020": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "ignorePatterns":
+    [
+        "src/assets/*",
+        "src/serviceWorker.js",
+        "src/tests/Components.test.js",
+        "src/tests/Actions.test.js",
+        "src/tests/NetflixStore.test.js",
+        "src/tests/AuthenticationStore.test.js"
+    ]
+    ,
+    "rules": {
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "no-console": ["error", { "allow": ["warn", "error"] }]
+    }
+}

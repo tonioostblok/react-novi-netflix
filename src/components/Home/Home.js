@@ -1,79 +1,92 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NetflixShows from "../NetflixShows";
+import NetflixShows from '../NetflixShows';
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      netflixShowsFilter:false,
-      searchQuery: ""
-    }
+      netflixShowsFilter: false,
+      searchQuery: '',
+    };
   }
+
   componentDidMount() {
     const userId = localStorage.getItem('user_id');
+    const { history, fetchCountries, getMe } = this.props;
     if (!userId) {
-      this.props.history.push('/');
+      history.push('/');
     }
 
-    this.props.fetchCountries();
-    this.props.getMe(userId)
+    fetchCountries();
+    getMe(userId);
   }
 
-  handleButtonClick(value){
+  handleButtonClick(value) {
     this.setState({
-      netflixShowsFilter:value
-    })
+      netflixShowsFilter: value,
+    });
   }
-  handleTitleSearch(event){
-    const searchTerm = event.target.value
+
+  handleTitleSearch(event) {
+    const searchTerm = event.target.value;
     this.setState({
-      netflixShowsFilter: "search",
+      netflixShowsFilter: 'search',
       searchQuery: `query=${searchTerm}`,
-    })
+    });
+  }
 
-  }
-  signOut(){
+  signOut() {
+    const { history } = this.props;
     localStorage.removeItem('user_id');
-    this.props.history.push('/');
+    history.push('/');
   }
+
   render() {
+    const { history } = this.props;
+    const { searchQuery, netflixShowsFilter } = this.state;
     return (
-        <div className={'app-wrapper'}>
-        {
+      <div className="app-wrapper">
         <div>
           <div className="menu-bar">
-            <p onClick={() => {this.props.history.push("/account")}}>Account settings</p>
-            <p onClick={() => this.signOut()}>Sign out</p>
+            <button
+              className="navigation-button"
+              type="button"
+              onClick={() => { history.push('/account'); }}
+            >
+              Account settings
+            </button>
+            <button
+              type="button"
+              className="navigation-button"
+              onClick={() => this.signOut()}
+            >
+              Sign out
+            </button>
           </div>
           <div className="button-wrapper">
-            <div className={"search-wrapper"}>
+            <div className="search-wrapper">
               <input
-                  className={"form-input"}
-                  placeholder={"Search for specific shows"}
-                  name={"search-shows"}
-                  onChange={(e) => this.handleTitleSearch(e)}
+                className="form-input"
+                placeholder="Search for specific shows"
+                name="search-shows"
+                onChange={(e) => this.handleTitleSearch(e)}
               />
             </div>
-            <button onClick={() => this.handleButtonClick("new")}>NEW SHOWS</button>
-            <button onClick={() => this.handleButtonClick("deleted")}>EXPIRING SHOWS</button>
+            <button type="button" onClick={() => this.handleButtonClick('new')}>NEW SHOWS</button>
+            <button type="button" onClick={() => this.handleButtonClick('deleted')}>EXPIRING SHOWS</button>
           </div>
-          {this.state.netflixShowsFilter && <NetflixShows searchQuery={this.state.searchQuery} fetchDeleted={(this.state.netflixShowsFilter === 'deleted')} />}
+          {netflixShowsFilter && <NetflixShows searchQuery={searchQuery} fetchDeleted={(netflixShowsFilter === 'deleted')} />}
         </div>
-        }
       </div>
     );
   }
 }
 
 Home.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types,react/require-default-props
-  history: PropTypes.object,
-  fetchCountries: PropTypes.func,
-  fetchActualShows: PropTypes.func,
-  countries: PropTypes.array,
-  user: PropTypes.object,
-  getMe: PropTypes.func
+  history: PropTypes.instanceOf(Object).isRequired,
+  fetchCountries: PropTypes.func.isRequired,
+  getMe: PropTypes.func.isRequired,
 };
 
 export default Home;

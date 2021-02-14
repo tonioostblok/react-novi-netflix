@@ -7,64 +7,87 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message:""
-    }
+    };
   }
+
   componentDidMount() {
     this.redirectIfLoggedIn();
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate() {
     this.redirectIfLoggedIn();
   }
 
   submitHandler(event) {
     event.preventDefault();
-    const { username, password } = this.props.user;
-    if (username !== '' && password !== '') {
-      this.props.login(username, password);
+    const { user, login } = this.props;
+    if (user.username !== '' && user.password !== '') {
+      login(user.username, user.password);
     }
   }
 
   redirectIfLoggedIn() {
+    const { history } = this.props;
     const userId = localStorage.getItem('user_id');
     if (userId) {
-      this.props.history.push('/home');
+      history.push('/home');
     }
   }
 
   renderFlashMessage() {
-    const params = new URLSearchParams(this.props.location.search);
+    const { location } = this.props;
+    const params = new URLSearchParams(location.search);
     const message = params.get('message');
-    if(message){
-      return(
-          <div className="flash-message">
-            <p>{message}</p>
-          </div>
-      )
+    if (message) {
+      return (
+        <div className="flash-message">
+          <p>{message}</p>
+        </div>
+      );
     }
+    return '';
   }
 
   render() {
+    const { updateUserName, updatePassword, history } = this.props;
     return (
       <>
-        <section className={"user-login"}>
-          <div className={"section-inner"}>
-            <div className={"form"}>
+        <section className="user-login">
+          <div className="section-inner">
+            <div className="form">
               <form
-                  onSubmit={(e) => this.submitHandler(e)}
-                  className={"login"}
+                onSubmit={(e) => this.submitHandler(e)}
+                className="login"
               >
                 <h1>Login</h1>
                 { this.renderFlashMessage() }
                 <div className="form-group">
-                  <label>First Name</label>
-                  <input className={"form-input"} onChange={(value) => this.props.updateUserName(value.target.value)} />
-                  <label>Password</label>
-                  <input className={"form-input"} type="password" onChange={(value) => this.props.updatePassword(value.target.value)} />
+                  <label htmlFor="firstName">
+                    First Name
+                    <input
+                      id="firstName"
+                      className="form-input"
+                      onChange={(value) => updateUserName(value.target.value)}
+                    />
+                  </label>
+                  <label htmlFor="password">
+                    Password
+                    <input
+                      id="password"
+                      className="form-input"
+                      type="password"
+                      onChange={(value) => updatePassword(value.target.value)}
+                    />
+                  </label>
                 </div>
                 <button type="submit">Submit</button>
-                <p className="link" onClick={() => this.props.history.push("/register")}>No account? Register here!</p>
+                <button
+                  type="button"
+                  className="link navigation-button"
+                  onClick={() => history.push('/register')}
+                >
+                  No account? Register here!
+                </button>
               </form>
             </div>
           </div>
@@ -74,13 +97,11 @@ class Login extends React.Component {
   }
 }
 Login.propTypes = {
-  // eslint-disable-next-line no-undef,react/require-default-props
-  login: PropTypes.func,
-  // eslint-disable-next-line no-undef,react/require-default-props
-  updateUserName: PropTypes.func,
-  // eslint-disable-next-line no-undef,react/require-default-props
-  updatePassword: PropTypes.func,
-  // eslint-disable-next-line react/forbid-prop-types,react/require-default-props
-  user: PropTypes.object,
+  login: PropTypes.func.isRequired,
+  updateUserName: PropTypes.func.isRequired,
+  updatePassword: PropTypes.func.isRequired,
+  user: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired,
+  location: PropTypes.instanceOf(Object).isRequired,
 };
 export default Login;

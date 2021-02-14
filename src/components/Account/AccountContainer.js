@@ -3,15 +3,15 @@ import Account from './Account';
 import { getMe, updateUser } from '../../store/authentication';
 import { fetchCountries } from '../../store/netflix';
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = (state) => ({
   user: state.authentication.user,
-  countries: state.netflix.countries
+  countries: state.netflix.countries,
 });
 
 const actions = {
   getMe,
   fetchCountries,
-  updateUser
+  updateUser,
 };
 
 export default connect(mapStateToProps, actions)(Account);

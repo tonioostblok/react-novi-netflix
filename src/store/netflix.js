@@ -1,64 +1,55 @@
-import moment from "moment";
-import {NETFLIX_API_URL, API_REQUEST_HEADERS, API_REQUEST_OBJECT} from '../constants/api'
+import { NETFLIX_API_URL, API_REQUEST_HEADERS, API_REQUEST_OBJECT } from '../constants/api';
 
 export const FETCH_SHOWS_CHANGE = 'FETCH_SHOWS_CHANGE';
 
-export const COUNTRIES_FETCHED = 'COUNTRIES_FETCHED'
-export const FETCHING = 'FETCHING'
+export const COUNTRIES_FETCHED = 'COUNTRIES_FETCHED';
+export const FETCHING = 'FETCHING';
 
 export function fetchShowsChange(payload) {
-    return ({
-        type: FETCH_SHOWS_CHANGE,
-        payload,
-    });
+  return ({
+    type: FETCH_SHOWS_CHANGE,
+    payload,
+  });
 }
 
 export function fetching(payload) {
-    return ({
-        type: FETCHING,
-        payload
-    })
+  return ({
+    type: FETCHING,
+    payload,
+  });
 }
 
 export function fetchCountriesChange(payload) {
-    return ({
-        type: COUNTRIES_FETCHED,
-        payload
-    })
+  return ({
+    type: COUNTRIES_FETCHED,
+    payload,
+  });
 }
 
-export const fetchCountries = () => {
+export const fetchCountries = () => (dispatch) => {
+  const requestObj = {
+    ...API_REQUEST_OBJECT,
+    method: 'GET',
+    headers: {
+      ...API_REQUEST_HEADERS,
+    },
+  };
 
-    return (dispatch) => {
-        let requestObj = {
-            ...API_REQUEST_OBJECT,
-            method: "GET",
-            headers: {
-                ...API_REQUEST_HEADERS
-            }
-        }
+  return fetch(`${NETFLIX_API_URL}/countries`, requestObj)
+    .then((response) => Promise.resolve(response.json())).then((data) => {
+      const mappedCountries = [];
 
-        return fetch(`${NETFLIX_API_URL}/countries`, requestObj)
-            .then(response => {
-                return Promise.resolve(response.json())
-            }).then(data => {
-                let mappedCountries = [];
-
-                data.results.map((val) => {
-                    return mappedCountries.push({
-                        key: val.id,
-                        value: val.id,
-                        flag: val.countrycode.toLowerCase(),
-                        text: val.country.trim()
-                    })
-                })
-                dispatch(fetchCountriesChange(mappedCountries))
-                return Promise.resolve(data)
-            }).catch(err => {
-                console.error(err)
-            })
-
-    }
+      data.results.map((val) => mappedCountries.push({
+        key: val.id,
+        value: val.id,
+        flag: val.countrycode.toLowerCase(),
+        text: val.country.trim(),
+      }));
+      dispatch(fetchCountriesChange(mappedCountries));
+      return Promise.resolve(data);
+    }).catch((err) => {
+      console.error(err);
+    });
 };
 
 /**
@@ -68,33 +59,25 @@ export const fetchCountries = () => {
  * @param countryList
  * @returns {function(*): Promise<unknown>}
  */
-export const fetchActualShows = (offset = 0, limit = 10, countryList = 67, date = false, query = "filterBy= New last 24 hours") => {
+export const fetchActualShows = (offset = 0, limit = 10, countryList = 67, query = 'filterBy= New last 24 hours') => (dispatch) => {
+  const requestObj = {
+    ...API_REQUEST_OBJECT,
+    method: 'GET',
+    headers: {
+      ...API_REQUEST_HEADERS,
+    },
+  };
 
-    return (dispatch) => {
-        let requestObj = {
-            ...API_REQUEST_OBJECT,
-            method: "GET",
-            headers: {
-                ...API_REQUEST_HEADERS
-            }
-        }
+  dispatch(fetching(true));
+  return fetch(`${NETFLIX_API_URL}/search?${query}&offset=${offset}&limit=${limit}&countrylist=${countryList}`, requestObj)
+    .then((response) => Promise.resolve(response.json())).then((data) => {
+      dispatch(fetchShowsChange(data.results));
 
-        if(!date){
-            date = moment().subtract(7, "days").format('YYYY-MM-DD')
-        }
-        dispatch(fetching(true))
-        return fetch(`${NETFLIX_API_URL}/search?${query}&offset=${offset}&limit=${limit}&countrylist=${countryList}`, requestObj)
-            .then(response => {
-                return Promise.resolve(response.json())
-            }).then(data => {
-                dispatch(fetchShowsChange(data.results))
-
-                dispatch(fetching(false))
-                return Promise.resolve(data)
-            }).catch(err => {
-                console.error(err)
-            })
-    }
+      dispatch(fetching(false));
+      return Promise.resolve(data);
+    }).catch((err) => {
+      console.error(err);
+    });
 };
 
 /**
@@ -102,77 +85,62 @@ export const fetchActualShows = (offset = 0, limit = 10, countryList = 67, date 
  * @param offset
  * @param limit
  * @param countryList
- * @param date
  * @returns {function(*=): Promise<unknown>}
  */
 export const fetchDeletedShows = (offset = 0,
-                                  limit = 10,
-                                  countryList = 67,
-                                  date = false
-                                ) => {
-
-    return (dispatch) => {
-        let requestObj = {
-            ...API_REQUEST_OBJECT,
-            method: "GET",
-            headers: {
-                ...API_REQUEST_HEADERS
-            }
-        }
-        if(!date){
-            date = moment().subtract(1, "months").format('YYYY-MM-DD')
-        }
-        dispatch(fetching(true))
-        return fetch(`${NETFLIX_API_URL}expiring?offset=${offset}&limit=${limit}&countrylist=${countryList}&date=${date}`, requestObj)
-            .then(response => {
-                return Promise.resolve(response.json())
-            }).then(data => {
-                /**
-                 * due to the api not showing actual title details in the expiring endpoint we need to do this longer way of feching them.
-                 */
-                const sortedByExpireDate = data.results.sort((a, b) => {
-                    return new Date(a.expiredate) - new Date(b.expiredate)
-                })
-                let promises = sortedByExpireDate.map((val, key) => {
-                    return fetch(`${NETFLIX_API_URL}title?netflixid=${val.netflixid}`, requestObj).then(response => {
-                        return Promise.resolve(response.json())
-                    }).then(response => {
-                        let show = response.results[0];
-                        return {
-                            title: show.title,
-                            img: show.img,
-                            year: show.year,
-                            synopsis: show.synopsis,
-                            expireDate: val.expiredate
-                        }
-                    })
-                })
-                Promise.all(promises).then(res => {
-                    dispatch(fetchShowsChange(res))
-                    dispatch(fetching(false))
-                })
-                return Promise.resolve(data)
-            }).catch(err => {
-                console.error(err)
-            })
-    }
+  limit = 10,
+  countryList = 67) => (dispatch) => {
+  const requestObj = {
+    ...API_REQUEST_OBJECT,
+    method: 'GET',
+    headers: {
+      ...API_REQUEST_HEADERS,
+    },
+  };
+  dispatch(fetching(true));
+  return fetch(`${NETFLIX_API_URL}expiring?offset=${offset}&limit=${limit}&countrylist=${countryList}`, requestObj)
+    .then((response) => Promise.resolve(response.json())).then((data) => {
+      /**
+       * due to the api not showing actual title details in the expiring endpoint,
+       * we need to do this longer way of feching them.
+      */
+      const sortedByExpireDate = data.results.sort((a, b) => (
+        new Date(a.expiredate) - new Date(b.expiredate)));
+      const promises = sortedByExpireDate.map((val) => fetch(`${NETFLIX_API_URL}title?netflixid=${val.netflixid}`, requestObj).then((response) => Promise.resolve(response.json())).then((response) => {
+        const show = response.results[0];
+        return {
+          title: show.title,
+          img: show.img,
+          year: show.year,
+          synopsis: show.synopsis,
+          expireDate: val.expiredate,
+        };
+      }));
+      Promise.all(promises).then((res) => {
+        dispatch(fetchShowsChange(res));
+        dispatch(fetching(false));
+      });
+      return Promise.resolve(data);
+    }).catch((err) => {
+      console.error(err);
+    });
 };
 
 export const initialState = {
-    fetching: false,
-    shows: [],
-    countries: []
+  fetching: false,
+  shows: [],
+  countries: [],
 };
 
 export default function netflixReducer(state = initialState, action) {
-    switch (action.type) {
-        case FETCHING:
-            return {...state, fetching: action.payload};
-        case FETCH_SHOWS_CHANGE:
-            return {...state, shows: action.payload};
-        case COUNTRIES_FETCHED:
-            return {...state, countries: action.payload};
-        default:
-            return {...state};
-    }
+  switch (action.type) {
+    case FETCHING:
+      return { ...state, fetching: action.payload };
+    case FETCH_SHOWS_CHANGE:
+      return { ...state, shows: action.payload };
+    case COUNTRIES_FETCHED:
+      return { ...state, countries: action.payload };
+    default:
+      return { ...state };
+  }
 }

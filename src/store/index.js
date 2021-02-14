@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
-// eslint-disable-next-line import/no-unresolved
+// eslint-disable-next-line import/no-unresolved,import/no-extraneous-dependencies
 import createBrowserHistory from 'history/createBrowserHistory';
 import rootReducer from './rootReducer';
 

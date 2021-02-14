@@ -8,5 +8,5 @@ import netflix from './netflix';
 export default combineReducers({
   routing: routerReducer,
   authentication,
-  netflix
+  netflix,
 });

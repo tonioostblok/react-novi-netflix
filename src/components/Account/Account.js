@@ -2,85 +2,111 @@ import React from 'react';
 import '../../css/login.css';
 import PropTypes from 'prop-types';
 
-import '../../css/login.css';
-import CountrySelect from "../CountrySelect/CountrySelect";
+import CountrySelect from '../CountrySelect/CountrySelect';
 
 class Account extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username:null,
-      password:null,
-      country:null,
-    }
-    this.handleChange = this.handleChange.bind(this)
+      username: null,
+      password: null,
+      country: null,
+    };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    this.props.getMe(localStorage.getItem('user_id'))
+    const {
+      getMe,
+      history,
+      fetchCountries,
+      user,
+    } = this.props;
+    getMe(localStorage.getItem('user_id'));
     const userId = localStorage.getItem('user_id');
     if (!userId) {
-      this.props.history.push('/');
+      history.push('/');
     }
-    if(this.props.user.username === ""){
-      this.props.getMe(userId)
+    if (user.username === '') {
+      getMe(userId);
     }
-    this.props.fetchCountries()
+    fetchCountries();
   }
 
   submitHandler(event) {
     event.preventDefault();
-    this.props.updateUser({
-      username: this.state.username ? this.state.username : this.props.user.username,
-      password: this.state.password ? this.state.password : this.props.user.password,
-      country: this.state.country ? this.state.country : this.props.user.country,
-    })
+    const {
+      updateUser,
+      user,
+    } = this.props;
 
-
+    const { username, password, country } = this.state;
+    updateUser({
+      username: username || user.username,
+      password: password || user.password,
+      country: country || user.country,
+    });
   }
 
-  handleChange(e){
+  handleChange(e) {
     this.setState({
-      [e.target.name]:e.target.value
-    })
+      [e.target.name]: e.target.value,
+    });
   }
 
   render() {
+    const {
+      history,
+      user,
+      countries,
+    } = this.props;
+    const {
+      username,
+      password,
+      country,
+    } = this.state;
     return (
-      <div className={"app-wrapper"}>
-       <p onClick={() => {this.props.history.goBack()}}>Go Back</p>
-       <h1>Account settings</h1>
-        <div className={"form"}>
+      <div className="app-wrapper">
+        <button className="navigation-button" type="button" onClick={() => { history.goBack(); }}>Go Back</button>
+        <h1>Account settings</h1>
+        <div className="form">
           <form className="form" onSubmit={(e) => this.submitHandler(e)}>
             <div className="form-group">
-              <label>Username</label>
-              <input
-                  className={"form-input"}
+              <label htmlFor="username">
+                Username
+                <input
+                  id="username"
+                  className="form-input"
                   type="text"
                   name="username"
-                  value={(this.state.username) ? this.state.username : this.props.user.username}
+                  value={username || user.username}
                   onChange={(e) => this.handleChange(e)}
-              />
+                />
+              </label>
             </div>
             <div className="form-group">
-              <label>Password</label>
-              <input
-                  className={"form-input"}
+              <label htmlFor="password">
+                Password
+                <input
+                  id="password"
+                  className="form-input"
                   type="text"
                   name="password"
-                  value={(this.state.password) ? this.state.password : this.props.user.password}
+                  value={password || user.password}
                   onChange={(e) => this.handleChange(e)}
-              />
+                />
+              </label>
             </div>
             <div className="form-group">
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <label>Country</label>
               <CountrySelect
-                  selectedCountry={(this.state.country) ? this.state.country : this.props.user.country}
-                  countries={this.props.countries}
-                  handleChange={this.handleChange}
+                selectedCountry={country || user.country}
+                countries={countries}
+                handleChange={this.handleChange}
               />
             </div>
-            <button>Submit</button>
+            <button type="submit">Submit</button>
           </form>
         </div>
       </div>
@@ -88,10 +114,11 @@ class Account extends React.Component {
   }
 }
 Account.propTypes = {
-  user: PropTypes.any,
-  getMe: PropTypes.func,
-  fetchCountries: PropTypes.func,
-  countries: PropTypes.any,
-  updateUser: PropTypes.func,
+  user: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired,
+  getMe: PropTypes.func.isRequired,
+  fetchCountries: PropTypes.func.isRequired,
+  countries: PropTypes.instanceOf(Array).isRequired,
+  updateUser: PropTypes.func.isRequired,
 };
 export default Account;
