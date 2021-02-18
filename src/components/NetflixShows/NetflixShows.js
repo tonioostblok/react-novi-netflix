@@ -76,13 +76,15 @@ class NetflixShows extends React.Component {
               </div>
             )
             : shows && shows.map((val) => (
-              <Show
-                title={val.title}
-                img={val.img}
-                synopsis={val.synopsis}
-                year={val.year}
-                expireDate={!val.expireDate ? '' : val.expireDate}
-              />
+              <div key={val.title} className="wrapping-div">
+                <Show
+                  title={val.title}
+                  img={val.img}
+                  synopsis={val.synopsis}
+                  year={val.year}
+                  expireDate={!val.expireDate ? '' : val.expireDate}
+                />
+              </div>
             ))
         }
         <div className="pagination">

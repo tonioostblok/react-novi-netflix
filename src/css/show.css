@@ -16,7 +16,7 @@
   background-color: #505050;
   color: white;
   align-items: center;
-  width: 49%;
+  width: 100%;
   margin: 5px 0;
   padding: 5px;
   cursor: pointer;
@@ -47,6 +47,10 @@
   font-style: normal;
   line-height: 1.67;
   letter-spacing: normal;
+}
+
+.wrapping-div {
+  width: 49%;
 }
 
 /*# sourceMappingURL=show.css.map */

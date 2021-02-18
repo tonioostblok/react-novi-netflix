@@ -8,9 +8,9 @@ class Account extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: null,
-      password: null,
-      country: null,
+      username: '',
+      password: '',
+      country: '',
     };
     this.handleChange = this.handleChange.bind(this);
   }
