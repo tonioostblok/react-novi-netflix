@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../css/login.css';
 import PropTypes from 'prop-types';
 
 import CountrySelect from '../CountrySelect/CountrySelect';

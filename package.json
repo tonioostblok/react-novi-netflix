@@ -21,9 +21,7 @@
     "react-scripts": "3.4.4",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "remove": "^0.1.5",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^2.0.0"
+    "remove": "^0.1.5"
   },
   "scripts": {
     "start": "react-scripts start",

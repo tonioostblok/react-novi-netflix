@@ -9,8 +9,6 @@ import Account from './Account';
 import Registration from './Registration';
 import UpcomingExpiring from './UpcomingExpiring';
 
-import '../css/App.css';
-import 'semantic-ui-css/semantic.min.css';
 import '../css/styles.css';
 
 function App() {

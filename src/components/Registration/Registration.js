@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../../css/login.css';
 import CountrySelect from '../CountrySelect/CountrySelect';
 
 class Registration extends React.Component {

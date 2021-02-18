@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../../css/components.css';
 import ReactPaginate from 'react-paginate';
 import Loader from 'react-loader-spinner';
 import Show from '../Shows/Show';
