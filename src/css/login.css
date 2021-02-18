@@ -15,6 +15,9 @@
   padding: 15px;
   display: flex;
 }
+.form-input:focus {
+  outline: none;
+}
 
 label {
   font-size: 23px;
@@ -28,6 +31,10 @@ label {
 .navigation-button {
   background: transparent;
   border: none;
+}
+
+.empty-input {
+  background: rgba(255, 0, 0, 0.2);
 }
 
 button {
@@ -45,6 +52,10 @@ button {
   font-size: 23px;
   line-height: 0.5;
   color: #fff;
+}
+
+button:not(.link):hover {
+  background: rgba(255, 0, 0, 0.2);
 }
 
 .user-login {

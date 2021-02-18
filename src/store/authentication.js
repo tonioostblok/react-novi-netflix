@@ -3,6 +3,7 @@ import firebase from '../constants/Firebase';
 export const LOGIN_CHANGE = 'LOGIN_CHANGE';
 export const USERNAME_CHANGE = 'USERNAME_CHANGE';
 export const PASSWORD_CHANGE = 'PASSWORD_CHANGE';
+export const MESSAGE_CHANGE = 'MESSAGE_CHANGE';
 
 export function loginChange(payload) {
   return ({
@@ -20,6 +21,13 @@ export function userNameChange(payload) {
 export function passwordChange(payload) {
   return ({
     type: PASSWORD_CHANGE,
+    payload,
+  });
+}
+
+export function message(payload) {
+  return ({
+    type: MESSAGE_CHANGE,
     payload,
   });
 }
@@ -46,19 +54,24 @@ export const login = (username, password) => (dispatch) => {
           dispatch(loginChange(user));
         }
       });
+      if (!localStorage.getItem('user_id')) {
+        dispatch(message('The username / password provided was incorrect, please try again.'));
+      }
     });
 };
 
-export const registerUser = (registerObject) => () => {
+export const registerUser = (registerObject) => (dispatch) => {
   firebase.firestore().collection('users').add({
     username: registerObject.username,
     password: registerObject.password,
     country: registerObject.country,
   });
+  dispatch(message('Successfully registered, you can now log in!.'));
 };
 
-export const updateUser = (updateValues) => () => {
+export const updateUser = (updateValues) => (dispatch) => {
   firebase.firestore().collection('users').doc(localStorage.getItem('user_id')).set(updateValues);
+  dispatch(message('Successfully updated your account information.'));
 };
 
 export const updateUserName = (username) => (dispatch) => {
@@ -70,6 +83,7 @@ export const updatePassword = (password) => (dispatch) => {
 export const initialState = {
   username: '',
   password: '',
+  message: '',
   user: {
     username: '',
     password: '',
@@ -79,6 +93,8 @@ export const initialState = {
 
 export default function authenticationReducer(state = initialState, action) {
   switch (action.type) {
+    case MESSAGE_CHANGE:
+      return { ...state, message: action.payload };
     case LOGIN_CHANGE:
       return { ...state, user: action.payload };
     case USERNAME_CHANGE:

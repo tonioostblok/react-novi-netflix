@@ -45,7 +45,7 @@ class Registration extends React.Component {
     const { history, registerUser } = this.props;
     if (!this.isFormValid()) {
       registerUser(this.state);
-      history.replace('/login?message=Successfully registred, you can now log in!');
+      history.push('/');
     }
   }
 
@@ -53,6 +53,11 @@ class Registration extends React.Component {
     this.setState({
       [e.target.name]: e.target.value,
     });
+    if (e.target.value === '') {
+      e.target.className += ' empty-input';
+    } else {
+      e.target.className = 'form-input';
+    }
   }
 
   inputFieldsFilled() {
@@ -72,6 +77,7 @@ class Registration extends React.Component {
 
   render() {
     const { countries } = this.props;
+    const { country } = this.state;
     return (
       <>
         <section className="user-login">
@@ -120,6 +126,7 @@ class Registration extends React.Component {
                   <CountrySelect
                     countries={countries}
                     handleChange={this.handleChange}
+                    selectedCountry={country}
                   />
                 </div>
                 <button disabled={this.isFormValid()} type="submit">Submit</button>

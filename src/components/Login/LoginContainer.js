@@ -3,7 +3,7 @@ import Login from './Login';
 import { login, updateUserName, updatePassword } from '../../store/authentication';
 
 const mapStateToProps = (state) => ({
-  user: state.authentication,
+  authentication: state.authentication,
 });
 
 const actions = {

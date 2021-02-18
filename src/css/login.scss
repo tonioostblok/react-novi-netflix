@@ -14,6 +14,9 @@
   color: black;
   padding: 15px;
   display: flex;
+  &:focus{
+    outline: none;
+  }
 }
 
 label {
@@ -28,6 +31,9 @@ label {
   background:transparent;
   border:none;
 
+}
+.empty-input{
+  background:rgba(255, 0, 0, 0.2);
 }
 button {
   cursor:pointer;
@@ -44,6 +50,11 @@ button {
   font-size: 23px;
   line-height: .5;
   color: #fff;
+}
+button:not(.link){
+  &:hover{
+    background:rgba(255, 0, 0, 0.2);
+  }
 }
 
 .user-login {

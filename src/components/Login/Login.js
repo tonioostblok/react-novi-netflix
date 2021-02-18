@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../../css/login.css';
 
-// eslint-disable-next-line react/prefer-stateless-function
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -20,9 +19,9 @@ class Login extends React.Component {
 
   submitHandler(event) {
     event.preventDefault();
-    const { user, login } = this.props;
-    if (user.username !== '' && user.password !== '') {
-      login(user.username, user.password);
+    const { authentication, login } = this.props;
+    if (authentication.username !== '' && authentication.password !== '') {
+      login(authentication.username, authentication.password);
     }
   }
 
@@ -34,22 +33,26 @@ class Login extends React.Component {
     }
   }
 
-  renderFlashMessage() {
-    const { location } = this.props;
-    const params = new URLSearchParams(location.search);
-    const message = params.get('message');
-    if (message) {
-      return (
-        <div className="flash-message">
-          <p>{message}</p>
-        </div>
-      );
+  handleInputChange(event, type = '') {
+    const { updateUserName, updatePassword } = this.props;
+    if (type === 'username') {
+      updateUserName(event.target.value);
+    } else {
+      updatePassword(event.target.value);
     }
-    return '';
+
+    if (event.target.value === '') {
+      event.target.className += ' empty-input';
+    } else {
+      event.target.className = 'form-input';
+    }
   }
 
   render() {
-    const { updateUserName, updatePassword, history } = this.props;
+    const {
+      history,
+      authentication,
+    } = this.props;
     return (
       <>
         <section className="user-login">
@@ -60,14 +63,20 @@ class Login extends React.Component {
                 className="login"
               >
                 <h1>Login</h1>
-                { this.renderFlashMessage() }
+                {
+                  authentication.message && (
+                  <div className="flash-message">
+                    <p>{authentication.message}</p>
+                  </div>
+                  )
+                }
                 <div className="form-group">
                   <label htmlFor="firstName">
                     First Name
                     <input
                       id="firstName"
                       className="form-input"
-                      onChange={(value) => updateUserName(value.target.value)}
+                      onChange={(event) => this.handleInputChange(event, 'username')}
                     />
                   </label>
                   <label htmlFor="password">
@@ -76,7 +85,7 @@ class Login extends React.Component {
                       id="password"
                       className="form-input"
                       type="password"
-                      onChange={(value) => updatePassword(value.target.value)}
+                      onChange={(event) => this.handleInputChange(event)}
                     />
                   </label>
                 </div>
@@ -100,8 +109,7 @@ Login.propTypes = {
   login: PropTypes.func.isRequired,
   updateUserName: PropTypes.func.isRequired,
   updatePassword: PropTypes.func.isRequired,
-  user: PropTypes.instanceOf(Object).isRequired,
+  authentication: PropTypes.instanceOf(Object).isRequired,
   history: PropTypes.instanceOf(Object).isRequired,
-  location: PropTypes.instanceOf(Object).isRequired,
 };
 export default Login;
