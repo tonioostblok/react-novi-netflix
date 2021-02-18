@@ -67,6 +67,10 @@ export const signOut = (history) => (dispatch) => {
   dispatch(message('Successfully signed out.'));
 };
 
+export const emptyMessage = () => (dispatch) => {
+  dispatch(message(''));
+};
+
 export const registerUser = (registerObject, history) => (dispatch) => {
   firebase.firestore().collection('users').where('username', '==', registerObject.username).get()
     .then((snap) => {
@@ -95,6 +99,7 @@ export const updateUserName = (username) => (dispatch) => {
 export const updatePassword = (password) => (dispatch) => {
   dispatch(passwordChange(password));
 };
+
 export const initialState = {
   username: '',
   password: '',

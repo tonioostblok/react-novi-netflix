@@ -22,13 +22,21 @@ class Account extends React.Component {
       fetchCountries,
       user,
     } = this.props;
+    const { username, password, country } = user;
     getMe(localStorage.getItem('user_id'));
     const userId = localStorage.getItem('user_id');
     if (!userId) {
       history.push('/');
     }
+
     if (user.username === '') {
       getMe(userId);
+    } else {
+      this.setState({
+        username,
+        password,
+        country,
+      });
     }
     fetchCountries();
   }
@@ -76,12 +84,12 @@ class Account extends React.Component {
     }
   }
 
-
   render() {
     const {
       history,
       countries,
       message,
+      emptyMessage,
     } = this.props;
     const {
       username,
@@ -89,7 +97,16 @@ class Account extends React.Component {
     } = this.state;
     return (
       <div className="app-wrapper">
-        <button className="navigation-button" type="button" onClick={() => { history.goBack(); }}>Go Back</button>
+        <button
+          className="navigation-button"
+          type="button"
+          onClick={() => {
+            emptyMessage();
+            history.push('/home');
+          }}
+        >
+          Go Back
+        </button>
         {
           message && (
             <div className="flash-message">
@@ -136,6 +153,7 @@ Account.propTypes = {
   fetchCountries: PropTypes.func.isRequired,
   countries: PropTypes.instanceOf(Array).isRequired,
   updateUser: PropTypes.func.isRequired,
+  emptyMessage: PropTypes.func.isRequired,
   message: PropTypes.string.isRequired,
 };
 export default Account;

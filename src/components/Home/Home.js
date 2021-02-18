@@ -36,7 +36,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { history, message } = this.props;
+    const { history, message, emptyMessage } = this.props;
     const { searchQuery, netflixShowsFilter } = this.state;
     return (
       <div className="app-wrapper">
@@ -45,7 +45,10 @@ class Home extends React.Component {
             <button
               className="navigation-button"
               type="button"
-              onClick={() => { history.push('/account'); }}
+              onClick={() => {
+                history.push('/account');
+                emptyMessage();
+              }}
             >
               Account settings
             </button>
@@ -93,6 +96,7 @@ Home.propTypes = {
   history: PropTypes.instanceOf(Object).isRequired,
   fetchCountries: PropTypes.func.isRequired,
   getMe: PropTypes.func.isRequired,
+  emptyMessage: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
   message: PropTypes.string.isRequired,
 };

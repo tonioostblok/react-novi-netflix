@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Account from './Account';
-import { getMe, updateUser } from '../../store/authentication';
+import {getMe, updateUser, emptyMessage } from '../../store/authentication';
 import { fetchCountries } from '../../store/netflix';
 
 const mapStateToProps = (state) => ({
@@ -13,6 +13,7 @@ const actions = {
   getMe,
   fetchCountries,
   updateUser,
+  emptyMessage,
 };
 
 export default connect(mapStateToProps, actions)(Account);
