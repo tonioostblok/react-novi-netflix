@@ -5,7 +5,6 @@ import { fetchActualShows, fetchDeletedShows } from '../../store/netflix';
 const mapStateToProps = (state) => ({
   shows: state.netflix.shows,
   totalShows: state.netflix.totalShows,
-  totalShowsDeleted: state.netflix.totalShowsDeleted,
   fetching: state.netflix.fetching,
   user: state.authentication.user,
 });

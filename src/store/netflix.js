@@ -6,6 +6,7 @@ export const COUNTRIES_FETCHED = 'COUNTRIES_FETCHED';
 export const FETCHING = 'FETCHING';
 export const FETCH_SHOW_TOTAL_CHANGE = 'FETCH_SHOW_TOTAL_CHANGE';
 export const FETCH_DELETED_SHOW_TOTAL_CHANGE = 'FETCH_DELETED_SHOW_TOTAL_CHANGE';
+export const IGNORE_TOTALS_IF_STATEMENT = 'IGNORE_TOTALS_IF_STATEMENT';
 
 export function fetchShowsChange(payload) {
   return ({
@@ -38,6 +39,12 @@ export function fetchTotalsChange(payload) {
 export function fetchDeletedShowsTotals(payload) {
   return ({
     type: FETCH_DELETED_SHOW_TOTAL_CHANGE,
+    payload,
+  });
+}
+export function ignoreTotalsIfStatement(payload) {
+  return ({
+    type: IGNORE_TOTALS_IF_STATEMENT,
     payload,
   });
 }
@@ -88,7 +95,9 @@ export const fetchActualShows = (offset = 0, limit = 10, countryList = 67, query
   return fetch(`${NETFLIX_API_URL}/search?${query}&offset=${offset}&limit=${limit}&countrylist=${countryList}`, requestObj)
     .then((response) => Promise.resolve(response.json())).then((data) => {
       dispatch(fetchShowsChange(data.results));
-      dispatch(fetchTotalsChange(data.total));
+      if (offset === 0) {
+        dispatch(fetchTotalsChange(data.total));
+      }
       dispatch(fetching(false));
       return Promise.resolve(data);
     }).catch((err) => {
@@ -135,7 +144,9 @@ export const fetchDeletedShows = (offset = 0,
       }));
       Promise.all(promises).then((res) => {
         dispatch(fetchShowsChange(res));
-        dispatch(fetchDeletedShowsTotals(total))
+        if (offset === 0) {
+          dispatch(fetchTotalsChange(total));
+        }
         dispatch(fetching(false));
       });
       return Promise.resolve(data);
@@ -159,15 +170,7 @@ export default function netflixReducer(state = initialState, action) {
     case FETCH_SHOWS_CHANGE:
       return { ...state, shows: action.payload };
     case FETCH_SHOW_TOTAL_CHANGE:
-      if (state.totalShows === 0) {
-        return { ...state, totalShows: action.payload };
-      }
-      return { ...state };
-    case FETCH_DELETED_SHOW_TOTAL_CHANGE:
-      if (state.totalShowsDeleted === 0) {
-        return { ...state, totalShowsDeleted: action.payload };
-      }
-      return { ...state };
+      return { ...state, totalShows: action.payload };
     case COUNTRIES_FETCHED:
       return { ...state, countries: action.payload };
     default:

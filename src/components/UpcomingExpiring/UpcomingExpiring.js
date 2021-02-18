@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import NetflixShows from '../NetflixShows';
 
-class Home extends React.Component {
+class UpcomingExpiring extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       netflixShowsFilter: false,
-      searchQuery: '',
     };
   }
 
@@ -22,11 +21,9 @@ class Home extends React.Component {
     getMe(userId);
   }
 
-  handleTitleSearch() {
-    const searchInput = document.getElementById('search-input');
+  handleButtonClick(value) {
     this.setState({
-      netflixShowsFilter: 'search',
-      searchQuery: `query=${searchInput.value}`,
+      netflixShowsFilter: value,
     });
   }
 
@@ -52,9 +49,9 @@ class Home extends React.Component {
             <button
               className="navigation-button"
               type="button"
-              onClick={() => { history.push('/upcoming-and-expiring'); }}
+              onClick={() => { history.push('/home'); }}
             >
-              Upcoming & Expiring
+              Search all
             </button>
             <button
               type="button"
@@ -65,28 +62,21 @@ class Home extends React.Component {
             </button>
           </div>
           <div className="button-wrapper">
-            <div className="search-wrapper">
-              <input
-                id="search-input"
-                className="form-input"
-                placeholder="Search for specific shows"
-                name="search-shows"
-              />
-              <button type="button" onClick={() => this.handleTitleSearch()}>Search</button>
-            </div>
+            <button type="button" onClick={() => this.handleButtonClick('new')}>NEW SHOWS</button>
+            <button type="button" onClick={() => this.handleButtonClick('deleted')}>EXPIRING SHOWS</button>
           </div>
-          {netflixShowsFilter && <NetflixShows searchQuery={searchQuery} />}
+          {netflixShowsFilter && <NetflixShows searchQuery={searchQuery} fetchDeleted={(netflixShowsFilter === 'deleted')} />}
         </div>
       </div>
     );
   }
 }
 
-Home.propTypes = {
+UpcomingExpiring.propTypes = {
   history: PropTypes.instanceOf(Object).isRequired,
   fetchCountries: PropTypes.func.isRequired,
   getMe: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
 };
 
-export default Home;
+export default UpcomingExpiring;

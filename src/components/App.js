@@ -7,6 +7,7 @@ import Login from './Login';
 import Home from './Home';
 import Account from './Account';
 import Registration from './Registration';
+import UpcomingExpiring from './UpcomingExpiring';
 
 import '../css/App.css';
 import 'semantic-ui-css/semantic.min.css';
@@ -17,6 +18,7 @@ function App() {
     <div>
       <Router>
         <Route exact path="/home" component={Home} />
+        <Route exact path="/upcoming-and-expiring" component={UpcomingExpiring} />
         <Route exact path="/account" component={Account} />
         <Route exact path="/register" component={Registration} />
         <Route exact path="/" component={Login} />

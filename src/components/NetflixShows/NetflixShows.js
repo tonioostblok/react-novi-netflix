@@ -9,7 +9,6 @@ class NetflixShows extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      paginatedShows: false,
     };
   }
 
@@ -18,14 +17,7 @@ class NetflixShows extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { paginatedShows } = this.state;
-    const { shows, fetchDeleted, searchQuery } = this.props;
-    if (!paginatedShows && shows.length > 0) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({
-        paginatedShows: shows,
-      });
-    }
+    const { fetchDeleted, searchQuery } = this.props;
     if (prevProps.fetchDeleted !== fetchDeleted) {
       this.fetchNetflixShows();
     }
@@ -54,32 +46,15 @@ class NetflixShows extends React.Component {
       fetchDeleted,
       fetchActualShows,
       user,
+      searchQuery,
     } = this.props;
-    if (fetchDeleted) {
+    if (searchQuery !== '') {
+      fetchActualShows(data.selected * 10, 10, user.country, searchQuery);
+    } else if (fetchDeleted) {
       fetchDeletedShows(data.selected * 10, 10, user.country);
     } else {
       fetchActualShows(data.selected * 10, 10, user.country);
     }
-    // const {
-    //   fetchDeletedShows,
-    //   fetchDeleted,
-    //   fetchActualShows,
-    //   user,
-    // } = this.props;
-    // const { page, perPage } = this.state;
-    // let newPage = page + 1;
-    // if (goBack) {
-    //   newPage = (page <= 1) ? 1 : page - 1;
-    // }
-    // this.setState({
-    //   page: newPage,
-    // });
-    // const offset = (newPage - 1) * perPage;
-    // if (fetchDeleted) {
-    //   fetchDeletedShows(offset, perPage, user.country);
-    // } else {
-    //   fetchActualShows(offset, perPage, user.country);
-    // }
   }
 
   render() {
@@ -87,15 +62,9 @@ class NetflixShows extends React.Component {
       shows,
       totalShows,
       fetching,
-      totalShowsDeleted,
-      fetchDeleted,
     } = this.props;
-    let pageCount;
-    if (fetchDeleted) {
-      pageCount = Math.ceil(totalShowsDeleted / 10);
-    } else {
-      pageCount = Math.ceil(totalShows / 10);
-    }
+
+    const pageCount = Math.ceil(totalShows / 10);
 
     return (
       <div className="shows-container">
@@ -141,12 +110,11 @@ NetflixShows.propTypes = {
   user: PropTypes.object,
   shows: PropTypes.instanceOf(Array).isRequired,
   fetchDeleted: PropTypes.bool,
-  fetching: PropTypes.bool,
+  fetching: PropTypes.bool.isRequired,
   fetchActualShows: PropTypes.func.isRequired,
   fetchDeletedShows: PropTypes.func.isRequired,
   searchQuery: PropTypes.string,
   totalShows: PropTypes.number.isRequired,
-  totalShowsDeleted: PropTypes.number.isRequired,
 };
 
 NetflixShows.defaultProps = {
