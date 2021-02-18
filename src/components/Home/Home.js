@@ -37,9 +37,8 @@ class Home extends React.Component {
   }
 
   signOut() {
-    const { history } = this.props;
-    localStorage.removeItem('user_id');
-    history.push('/');
+    const { history, signOut } = this.props;
+    signOut(history);
   }
 
   render() {
@@ -87,6 +86,7 @@ Home.propTypes = {
   history: PropTypes.instanceOf(Object).isRequired,
   fetchCountries: PropTypes.func.isRequired,
   getMe: PropTypes.func.isRequired,
+  signOut: PropTypes.func.isRequired,
 };
 
 export default Home;

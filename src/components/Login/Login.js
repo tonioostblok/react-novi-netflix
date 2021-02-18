@@ -42,8 +42,10 @@ class Login extends React.Component {
     }
 
     if (event.target.value === '') {
+      // eslint-disable-next-line no-param-reassign
       event.target.className += ' empty-input';
     } else {
+      // eslint-disable-next-line no-param-reassign
       event.target.className = 'form-input';
     }
   }

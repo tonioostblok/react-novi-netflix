@@ -60,6 +60,12 @@ export const login = (username, password) => (dispatch) => {
     });
 };
 
+export const signOut = (history) => (dispatch) => {
+  localStorage.removeItem('user_id');
+  history.push('/');
+  dispatch(message('Successfully signed out.'));
+};
+
 export const registerUser = (registerObject) => (dispatch) => {
   firebase.firestore().collection('users').add({
     username: registerObject.username,
