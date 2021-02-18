@@ -6,6 +6,7 @@ import { registerUser } from '../../store/authentication';
 
 const mapStateToProps = (state) => ({
   countries: state.netflix.countries,
+  message: state.authentication.message,
 });
 
 const actions = {

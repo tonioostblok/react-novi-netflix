@@ -39,6 +39,16 @@ label {
 }
 
 .pagination{
+  .active{
+    a{
+      background-color: white;
+      color:black;
+      cursor:default;
+      &:hover{
+        background-color: white;
+      }
+    }
+  }
   li{
     list-style-type: none;
     cursor:pointer;

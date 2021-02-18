@@ -52,6 +52,7 @@ export const login = (username, password) => (dispatch) => {
         if (user.password === password) {
           localStorage.setItem('user_id', doc.id);
           dispatch(loginChange(user));
+          dispatch(message('You have logged in successfully.'));
         }
       });
       if (!localStorage.getItem('user_id')) {
@@ -66,13 +67,21 @@ export const signOut = (history) => (dispatch) => {
   dispatch(message('Successfully signed out.'));
 };
 
-export const registerUser = (registerObject) => (dispatch) => {
-  firebase.firestore().collection('users').add({
-    username: registerObject.username,
-    password: registerObject.password,
-    country: registerObject.country,
-  });
-  dispatch(message('Successfully registered, you can now log in!.'));
+export const registerUser = (registerObject, history) => (dispatch) => {
+  firebase.firestore().collection('users').where('username', '==', registerObject.username).get()
+    .then((snap) => {
+      if (snap.size === 0) {
+        firebase.firestore().collection('users').add({
+          username: registerObject.username,
+          password: registerObject.password,
+          country: registerObject.country,
+        });
+        history.push('/');
+        dispatch(message('Successfully registered, you can now log in!.'));
+      } else {
+        dispatch(message('This username is allready taken. Please try again with a different one.'));
+      }
+    });
 };
 
 export const updateUser = (updateValues) => (dispatch) => {

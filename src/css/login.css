@@ -41,6 +41,14 @@ label {
   border: none;
 }
 
+.pagination .active a {
+  background-color: white;
+  color: black;
+  cursor: default;
+}
+.pagination .active a:hover {
+  background-color: white;
+}
 .pagination li {
   list-style-type: none;
   cursor: pointer;

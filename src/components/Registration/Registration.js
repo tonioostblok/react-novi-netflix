@@ -25,16 +25,23 @@ class Registration extends React.Component {
     const errors = [];
     const { password, passwordConfirm } = this.state;
 
+    // eslint-disable-next-line no-useless-escape
+    const specialCharactersFormat = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
     if (password.length > 0) {
       if (password !== passwordConfirm) {
         errors.push('The password does not match the one in the second password field.');
-      } else {
-        if (password.length < 8) {
-          errors.push('The password needs to have at least 8 characters.');
-        }
-        if (password.toLowerCase() === password) {
-          errors.push('The password needs to have at least one capital letter.');
-        }
+      }
+      if (password.length < 8) {
+        errors.push('The password needs to have at least 8 characters.');
+      }
+      if (password.toLowerCase() === password) {
+        errors.push('The password needs to have at least one capital letter.');
+      }
+      if (!/\d/.test(password)) {
+        errors.push('The password needs to have at least one number letter.');
+      }
+      if (!specialCharactersFormat.test(password)) {
+        errors.push('The password needs to have at least one special character.');
       }
     }
     return errors;
@@ -44,8 +51,7 @@ class Registration extends React.Component {
     event.preventDefault();
     const { history, registerUser } = this.props;
     if (!this.isFormValid()) {
-      registerUser(this.state);
-      history.push('/');
+      registerUser(this.state, history);
     }
   }
 
@@ -76,7 +82,7 @@ class Registration extends React.Component {
   }
 
   render() {
-    const { countries } = this.props;
+    const { countries, message } = this.props;
     const { country } = this.state;
     return (
       <>
@@ -88,6 +94,13 @@ class Registration extends React.Component {
                 className="login"
               >
                 <h1>Register</h1>
+                {
+                  message && (
+                    <div className="flash-message">
+                      <p>{message}</p>
+                    </div>
+                  )
+                }
                 <div className="form-group">
                   <label htmlFor="username">
                     Username
@@ -143,5 +156,6 @@ Registration.propTypes = {
   fetchCountries: PropTypes.func.isRequired,
   registerUser: PropTypes.func.isRequired,
   countries: PropTypes.instanceOf(Object).isRequired,
+  message: PropTypes.string.isRequired,
 };
 export default Registration;

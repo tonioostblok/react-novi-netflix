@@ -5,6 +5,7 @@ import { fetchCountries } from '../../store/netflix';
 
 const mapStateToProps = (state) => ({
   user: state.authentication.user,
+  message: state.authentication.message,
   countries: state.netflix.countries,
 });
 

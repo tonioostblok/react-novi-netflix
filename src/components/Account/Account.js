@@ -33,18 +33,33 @@ class Account extends React.Component {
     fetchCountries();
   }
 
+  componentDidUpdate(prevProps) {
+    const { user } = this.props;
+    const { username, password, country } = user;
+    if (prevProps.user.username !== username) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        username,
+        password,
+        country,
+      });
+    }
+  }
+
   submitHandler(event) {
     event.preventDefault();
     const {
       updateUser,
-      user,
     } = this.props;
 
     const { username, password, country } = this.state;
-    updateUser({
-      username: username || user.username,
-      password: password || user.password,
-      country: country || user.country,
+    if (username === '' || password === '' || country === '') {
+      return false;
+    }
+    return updateUser({
+      username,
+      password,
+      country,
     });
   }
 
@@ -52,22 +67,36 @@ class Account extends React.Component {
     this.setState({
       [e.target.name]: e.target.value,
     });
+    if (e.target.value === '') {
+      // eslint-disable-next-line no-param-reassign
+      e.target.className += ' empty-input';
+    } else {
+      // eslint-disable-next-line no-param-reassign
+      e.target.className = 'form-input';
+    }
   }
+
 
   render() {
     const {
       history,
-      user,
       countries,
+      message,
     } = this.props;
     const {
       username,
-      password,
       country,
     } = this.state;
     return (
       <div className="app-wrapper">
         <button className="navigation-button" type="button" onClick={() => { history.goBack(); }}>Go Back</button>
+        {
+          message && (
+            <div className="flash-message">
+              <p>{message}</p>
+            </div>
+          )
+        }
         <h1>Account settings</h1>
         <div className="form">
           <form className="form" onSubmit={(e) => this.submitHandler(e)}>
@@ -79,20 +108,7 @@ class Account extends React.Component {
                   className="form-input"
                   type="text"
                   name="username"
-                  value={username || user.username}
-                  onChange={(e) => this.handleChange(e)}
-                />
-              </label>
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">
-                Password
-                <input
-                  id="password"
-                  className="form-input"
-                  type="text"
-                  name="password"
-                  value={password || user.password}
+                  value={username}
                   onChange={(e) => this.handleChange(e)}
                 />
               </label>
@@ -101,7 +117,7 @@ class Account extends React.Component {
               {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <label>Country</label>
               <CountrySelect
-                selectedCountry={country || user.country}
+                selectedCountry={country}
                 countries={countries}
                 handleChange={this.handleChange}
               />
@@ -120,5 +136,6 @@ Account.propTypes = {
   fetchCountries: PropTypes.func.isRequired,
   countries: PropTypes.instanceOf(Array).isRequired,
   updateUser: PropTypes.func.isRequired,
+  message: PropTypes.string.isRequired,
 };
 export default Account;

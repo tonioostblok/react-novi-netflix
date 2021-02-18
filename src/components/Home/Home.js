@@ -36,7 +36,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { history } = this.props;
+    const { history, message } = this.props;
     const { searchQuery, netflixShowsFilter } = this.state;
     return (
       <div className="app-wrapper">
@@ -64,6 +64,13 @@ class Home extends React.Component {
               Sign out
             </button>
           </div>
+          {
+            message && (
+              <div className="flash-message">
+                <p>{message}</p>
+              </div>
+            )
+          }
           <div className="button-wrapper">
             <div className="search-wrapper">
               <input
@@ -87,6 +94,7 @@ Home.propTypes = {
   fetchCountries: PropTypes.func.isRequired,
   getMe: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
+  message: PropTypes.string.isRequired,
 };
 
 export default Home;
