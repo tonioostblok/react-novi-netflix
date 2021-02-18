@@ -18,7 +18,13 @@
     outline: none;
   }
 }
-
+.loader-wrapper{
+  width:100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+}
 label {
   font-size: 23px;
   font-weight: 600;
@@ -30,8 +36,44 @@ label {
 .navigation-button{
   background:transparent;
   border:none;
-
 }
+
+.pagination{
+  li{
+    list-style-type: none;
+    cursor:pointer;
+    text-align: center;
+    a{
+      line-height: 3.5;
+      transition: .3s ease;
+      background-color: #e50914;
+      color:white;
+      text-decoration: none;
+      height:50px;
+      width:50px;
+      display: block;
+      border-radius: 27px;
+      &:focus{
+        outline:none;
+      }
+      &:hover{
+        background:rgba(255, 0, 0, 0.2);
+      }
+    }
+  }
+  .previous, .next{
+    border-radius: 27px;
+    background-color: #e50914;
+    border: none;
+    outline: none;
+    text-align: center;
+    a {
+      color:white;
+      width: 75px;
+    }
+  }
+}
+
 .empty-input{
   background:rgba(255, 0, 0, 0.2);
 }

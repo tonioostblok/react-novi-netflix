@@ -19,6 +19,14 @@
   outline: none;
 }
 
+.loader-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+}
+
 label {
   font-size: 23px;
   font-weight: 600;
@@ -31,6 +39,40 @@ label {
 .navigation-button {
   background: transparent;
   border: none;
+}
+
+.pagination li {
+  list-style-type: none;
+  cursor: pointer;
+  text-align: center;
+}
+.pagination li a {
+  line-height: 3.5;
+  transition: 0.3s ease;
+  background-color: #e50914;
+  color: white;
+  text-decoration: none;
+  height: 50px;
+  width: 50px;
+  display: block;
+  border-radius: 27px;
+}
+.pagination li a:focus {
+  outline: none;
+}
+.pagination li a:hover {
+  background: rgba(255, 0, 0, 0.2);
+}
+.pagination .previous, .pagination .next {
+  border-radius: 27px;
+  background-color: #e50914;
+  border: none;
+  outline: none;
+  text-align: center;
+}
+.pagination .previous a, .pagination .next a {
+  color: white;
+  width: 75px;
 }
 
 .empty-input {

@@ -4,6 +4,8 @@ export const FETCH_SHOWS_CHANGE = 'FETCH_SHOWS_CHANGE';
 
 export const COUNTRIES_FETCHED = 'COUNTRIES_FETCHED';
 export const FETCHING = 'FETCHING';
+export const FETCH_SHOW_TOTAL_CHANGE = 'FETCH_SHOW_TOTAL_CHANGE';
+export const FETCH_DELETED_SHOW_TOTAL_CHANGE = 'FETCH_DELETED_SHOW_TOTAL_CHANGE';
 
 export function fetchShowsChange(payload) {
   return ({
@@ -22,6 +24,20 @@ export function fetching(payload) {
 export function fetchCountriesChange(payload) {
   return ({
     type: COUNTRIES_FETCHED,
+    payload,
+  });
+}
+
+export function fetchTotalsChange(payload) {
+  return ({
+    type: FETCH_SHOW_TOTAL_CHANGE,
+    payload,
+  });
+}
+
+export function fetchDeletedShowsTotals(payload) {
+  return ({
+    type: FETCH_DELETED_SHOW_TOTAL_CHANGE,
     payload,
   });
 }
@@ -72,7 +88,7 @@ export const fetchActualShows = (offset = 0, limit = 10, countryList = 67, query
   return fetch(`${NETFLIX_API_URL}/search?${query}&offset=${offset}&limit=${limit}&countrylist=${countryList}`, requestObj)
     .then((response) => Promise.resolve(response.json())).then((data) => {
       dispatch(fetchShowsChange(data.results));
-
+      dispatch(fetchTotalsChange(data.total));
       dispatch(fetching(false));
       return Promise.resolve(data);
     }).catch((err) => {
@@ -104,7 +120,8 @@ export const fetchDeletedShows = (offset = 0,
        * due to the api not showing actual title details in the expiring endpoint,
        * we need to do this longer way of feching them.
       */
-      const sortedByExpireDate = data.results.sort((a, b) => (
+      const { results, total } = data;
+      const sortedByExpireDate = results.sort((a, b) => (
         new Date(a.expiredate) - new Date(b.expiredate)));
       const promises = sortedByExpireDate.map((val) => fetch(`${NETFLIX_API_URL}title?netflixid=${val.netflixid}`, requestObj).then((response) => Promise.resolve(response.json())).then((response) => {
         const show = response.results[0];
@@ -118,6 +135,7 @@ export const fetchDeletedShows = (offset = 0,
       }));
       Promise.all(promises).then((res) => {
         dispatch(fetchShowsChange(res));
+        dispatch(fetchDeletedShowsTotals(total))
         dispatch(fetching(false));
       });
       return Promise.resolve(data);
@@ -129,6 +147,8 @@ export const fetchDeletedShows = (offset = 0,
 export const initialState = {
   fetching: false,
   shows: [],
+  totalShows: 0,
+  totalShowsDeleted: 0,
   countries: [],
 };
 
@@ -138,6 +158,16 @@ export default function netflixReducer(state = initialState, action) {
       return { ...state, fetching: action.payload };
     case FETCH_SHOWS_CHANGE:
       return { ...state, shows: action.payload };
+    case FETCH_SHOW_TOTAL_CHANGE:
+      if (state.totalShows === 0) {
+        return { ...state, totalShows: action.payload };
+      }
+      return { ...state };
+    case FETCH_DELETED_SHOW_TOTAL_CHANGE:
+      if (state.totalShowsDeleted === 0) {
+        return { ...state, totalShowsDeleted: action.payload };
+      }
+      return { ...state };
     case COUNTRIES_FETCHED:
       return { ...state, countries: action.payload };
     default:

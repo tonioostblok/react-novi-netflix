@@ -12,6 +12,8 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
+    "react-loader-spinner": "^4.0.0",
+    "react-paginate": "^7.1.0",
     "react-redux": "^7.2.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
@@ -33,7 +35,7 @@
     "extends": "react-app"
   },
   "jest": {
-    "moduleNameMapper":{
+    "moduleNameMapper": {
       "\\.(css|less|scss|sass)$": "identity-obj-proxy"
     },
     "setupFilesAfterEnv": [
