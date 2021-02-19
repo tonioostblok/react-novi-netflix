@@ -159,7 +159,6 @@ export const initialState = {
   fetching: false,
   shows: [],
   totalShows: 0,
-  totalShowsDeleted: 0,
   countries: [],
 };
 

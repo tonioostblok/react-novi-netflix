@@ -7,6 +7,7 @@ describe('Netflix reducer', () => {
       {
         fetching: false,
         shows: [],
+        totalShows: 0,
         countries: [],
       },
     );

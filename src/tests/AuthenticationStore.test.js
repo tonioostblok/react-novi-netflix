@@ -6,6 +6,7 @@ describe('Authentication reducer', () => {
     expect(reducer(undefined, {})).toEqual({
       username: '',
       password: '',
+      message: '',
       user: {
         username: '',
         password: '',
