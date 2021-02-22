@@ -1,6 +1,6 @@
 ##Introduction
 This project is a React project which is made for a school assignment. The project in short is displaying netflix shows which are new or about to expire.
-
+![Alt text](screenshot-react-novi.png?raw=true)
 ##Table of contents
 * Dependencies
 * Installation
@@ -44,3 +44,6 @@ Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.<br />
+
+##Loggin in
+To be able to log in, you will have to register first. This can be done by clicking on the link that is found inside the login page. Once you are on the register page, you can fill in the form and submit it. After that you will be able to log in with your used credentials
