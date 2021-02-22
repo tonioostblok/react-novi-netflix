@@ -5,6 +5,7 @@
 * Tested on MacOS.
 
 ##Installation
+* Clone the repository(https://github.com/tonioostblok/react-novi-netflix)
 * Run yarn install
 * Run yarn start
 
